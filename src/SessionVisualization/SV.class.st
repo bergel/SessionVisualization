@@ -40,7 +40,7 @@ SV >> numberOfRules [
 { #category : #'instance creation' }
 SV >> open [
 
-	| c maxWidth scale shape lbl box |
+	| c maxWidth scale shape lbl box allCircles |
 	c := RSCanvas new.
 	
 	maxWidth := 500.
@@ -60,7 +60,7 @@ SV >> open [
 		r entries do: [ :entry |
 			shape := RSEllipse new.
 			shape size: 10.
-			shape color: (r color alpha: 0.8).
+			shape color: (r color alpha: 0.5).
 			shape model: entry.
 			c add: shape.
 			shape @ RSPopup.
@@ -69,6 +69,11 @@ SV >> open [
 		]
 	].
 	
+	allCircles := c nodes select: [ :s | s class == RSEllipse ].
+	RSNormalizer size
+		shapes: allCircles;
+		from: 5; to: 15;
+		normalize: [ :entry | entry relevantContent lines size ].
 	
 	
 	c @ RSCanvasController.

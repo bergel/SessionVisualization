@@ -31,6 +31,14 @@ SVEntry >> printOn: str [
 ]
 
 { #category : #accessing }
+SVEntry >> relevantContent [
+	| lines i |
+	lines := self content lines.
+	i := lines indexOf: 'with response:'.
+	^ String cr join: (lines first: i)
+]
+
+{ #category : #accessing }
 SVEntry >> rule [
 
 	^ rule
