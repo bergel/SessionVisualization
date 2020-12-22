@@ -22,6 +22,14 @@ SVEntry >> content: anObject [
 	content := anObject
 ]
 
+{ #category : #printing }
+SVEntry >> printOn: str [
+	super printOn: str.
+	str nextPut: $<.
+	str nextPutAll: timestamp asString.
+	str nextPut: $>.
+]
+
 { #category : #accessing }
 SVEntry >> rule [
 

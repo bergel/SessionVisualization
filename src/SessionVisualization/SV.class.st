@@ -61,7 +61,10 @@ SV >> open [
 			shape := RSEllipse new.
 			shape size: 10.
 			shape color: (r color alpha: 0.8).
+			shape model: entry.
 			c add: shape.
+			shape @ RSPopup.
+			shape when: RSMouseClick do: [ :evt | evt shape model inspect ].
 			shape translateTo: (scale scale: entry second) @ (index * 20)
 		]
 	].
@@ -90,6 +93,24 @@ SV >> processSingleEventAsString: aLine [
 	
 
 	
+]
+
+{ #category : #'as yet unclassified' }
+SV >> processStream: aStream [
+	| isInMultiLine currentEvent l lineNumber |
+	lineNumber := 0.
+	isInMultiLine := false.
+	currentEvent := WriteStream on: String new.
+	[ aStream atEnd ] whileFalse: [ 
+		l := aStream nextLine.		
+		lineNumber := lineNumber + 1.
+		(l beginsWith: '[ ') 
+			ifTrue: [ 
+				currentEvent isEmpty ifFalse: [ self processSingleEventAsString: currentEvent contents ].
+				isInMultiLine := false. currentEvent := WriteStream on: String new. currentEvent nextPutAll: l. ]
+			ifFalse: [ isInMultiLine := true. currentEvent nextPutAll: String cr, l ].
+		 ].
+	currentEvent isEmpty ifFalse: [ self processSingleEventAsString: currentEvent contents ].
 ]
 
 { #category : #'as yet unclassified' }

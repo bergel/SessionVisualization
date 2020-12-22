@@ -83,3 +83,38 @@ OCUndeclaredVariableWarning: Undeclared temp: a
 	self assert: model entries second content equals: '[ 19-12-2020 17:17:13 ] Started interaction with a Playground'.
 	self assert: model entries third content equals: '[ 19-12-2020 17:17:17 ] Finished interaction with a Playground. Time Spent: 3687 ms'.	
 ]
+
+{ #category : #tests }
+SVTest >> testExampleMultiline2 [
+
+
+	model := SV new.
+	model addRule: [ :l | '*interaction*' match: l ] named: 'Inspector' color: Color lightGreen.
+	model addRule: [ :l | '*Executed code:*' match: l ] named: 'Executed' color: Color red.
+	model processStream: self exampleWithMultiLine readStream.
+	
+	self assert: model numberOfEntries equals: 3.
+	
+	self assert: model entries first content equals: '[ 19-12-2020 17:17:10 ] Executed code:
+a 
+with response:
+OCUndeclaredVariableWarning: Undeclared temp: a
+'.
+	self assert: model entries second content equals: '[ 19-12-2020 17:17:13 ] Started interaction with a Playground'.
+	self assert: model entries third content equals: '[ 19-12-2020 17:17:17 ] Finished interaction with a Playground. Time Spent: 3687 ms'.	
+]
+
+{ #category : #tests }
+SVTest >> testExampleWithStream [
+
+	model := SV new.
+	model addRule: [ :l | l endsWith: 'Opened new window: Playground' ] named: 'Playground' color: Color green.
+	model addRule: [ :l | l endsWith: 'Opened new window: Inspector' ] named: 'Inspector' color: Color lightGreen.
+	model addRule: [ :l | '*Finished interaction with a WindowDragging*' match: l ] named: 'Drag' color: Color red.
+	model processStream: self example readStream.
+	
+	self assert: model numberOfEntries equals: 10.
+	self assert: model numberOfRules equals: 3.
+	 
+
+]
