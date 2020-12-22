@@ -14,6 +14,11 @@ SV >> addRule: oneArgBlock named: aName color: aColor [
 	rules add: (SVRule new block: oneArgBlock; name: aName; color: aColor)
 ]
 
+{ #category : #'instance creation' }
+SV >> entries [
+	^ entries
+]
+
 { #category : #initialization }
 SV >> initialize [
 	super initialize.
@@ -68,7 +73,7 @@ SV >> open [
 ]
 
 { #category : #'as yet unclassified' }
-SV >> processLine: aLine [
+SV >> processSingleEventAsString: aLine [
 
 	| entry t |
 	rules do: [ :r |
@@ -89,5 +94,16 @@ SV >> processLine: aLine [
 
 { #category : #'as yet unclassified' }
 SV >> processText: aText [
-	aText lines do: [ :l | self processLine: l ]
+	| isInMultiLine currentEvent |
+	isInMultiLine := false.
+	currentEvent := nil.
+	aText lines do: [ :l | 
+		
+		(l beginsWith: '[ ') 
+			ifTrue: [ 
+				currentEvent ifNotNil: [ self processSingleEventAsString: currentEvent ].
+				isInMultiLine := false. currentEvent := l. ]
+			ifFalse: [ isInMultiLine := true. currentEvent := currentEvent, String cr, l ].
+		 ].
+	currentEvent ifNotNil: [ self processSingleEventAsString: currentEvent ].
 ]

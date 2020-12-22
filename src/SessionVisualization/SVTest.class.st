@@ -30,6 +30,17 @@ SVTest >> example [
 [ 19-12-2020 17:12:57 ] Started interaction with a WindowDragging'
 ]
 
+{ #category : #example }
+SVTest >> exampleWithMultiLine [
+	^ '[ 19-12-2020 17:17:10 ] Executed code:
+a 
+with response:
+OCUndeclaredVariableWarning: Undeclared temp: a
+
+[ 19-12-2020 17:17:13 ] Started interaction with a Playground
+[ 19-12-2020 17:17:17 ] Finished interaction with a Playground. Time Spent: 3687 ms'
+]
+
 { #category : #tests }
 SVTest >> testAllExamples [
 	SVExample selectors do: [ :s |
@@ -50,4 +61,25 @@ SVTest >> testExample [
 	self assert: model numberOfRules equals: 3.
 	 
 
+]
+
+{ #category : #tests }
+SVTest >> testExampleMultiline [
+
+
+	model := SV new.
+	model addRule: [ :l | '*interaction*' match: l ] named: 'Inspector' color: Color lightGreen.
+	model addRule: [ :l | '*Executed code:*' match: l ] named: 'Executed' color: Color red.
+	
+	model processText: self exampleWithMultiLine.
+	
+	self assert: model numberOfEntries equals: 3.
+	
+	self assert: model entries first content equals: '[ 19-12-2020 17:17:10 ] Executed code:
+a 
+with response:
+OCUndeclaredVariableWarning: Undeclared temp: a
+'.
+	self assert: model entries second content equals: '[ 19-12-2020 17:17:13 ] Started interaction with a Playground'.
+	self assert: model entries third content equals: '[ 19-12-2020 17:17:17 ] Finished interaction with a Playground. Time Spent: 3687 ms'.	
 ]
