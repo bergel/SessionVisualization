@@ -35,7 +35,36 @@ SV >> numberOfRules [
 { #category : #'instance creation' }
 SV >> open [
 
-	^ RSCanvas new open
+	| c maxWidth scale shape lbl box |
+	c := RSCanvas new.
+	
+	maxWidth := 500.
+	scale := NSScale linear.
+	scale range: { 0 . maxWidth }.
+	scale domain: { 0 . entries last second }.
+	
+	box := RSBox new color: Color transparent; withBorder.
+	box fromRectangle: ((0 @ 10) extent: (maxWidth @ (self numberOfRules  * 20))).
+	c add: box.
+	
+	rules doWithIndex: [ :r :index |
+		lbl := RSLabel text: r name.
+		c add: lbl.
+		lbl translateMiddleRightTo: -20 @ (index * 20).
+		
+		r entries do: [ :entry |
+			shape := RSEllipse new.
+			shape size: 10.
+			shape color: (r color alpha: 0.8).
+			c add: shape.
+			shape translateTo: (scale scale: entry second) @ (index * 20)
+		]
+	].
+	
+	
+	
+	c @ RSCanvasController.
+	^ c open
 ]
 
 { #category : #'as yet unclassified' }
