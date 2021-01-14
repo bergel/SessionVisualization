@@ -5,7 +5,8 @@ Class {
 		'block',
 		'name',
 		'color',
-		'entries'
+		'entries',
+		'shouldMark'
 	],
 	#category : #SessionVisualization
 }
@@ -54,7 +55,8 @@ SVRule >> entries: anObject [
 { #category : #initialization }
 SVRule >> initialize [
 	super initialize.
-	entries := OrderedCollection new
+	entries := OrderedCollection new.
+	shouldMark := false.
 ]
 
 { #category : #accessing }
@@ -72,4 +74,16 @@ SVRule >> name [
 SVRule >> name: anObject [
 
 	name := anObject
+]
+
+{ #category : #accessing }
+SVRule >> shouldMark [
+
+	^ shouldMark
+]
+
+{ #category : #accessing }
+SVRule >> shouldMark: aBoolean [
+
+	shouldMark := aBoolean
 ]

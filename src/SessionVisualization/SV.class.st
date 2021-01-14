@@ -10,8 +10,13 @@ Class {
 }
 
 { #category : #adding }
-SV >> addRule: oneArgBlock named: aName color: aColor [
-	rules add: (SVRule new block: oneArgBlock; name: aName; color: aColor)
+SV >> addRule: oneArgBlock named: aName color: aColor [ 
+	self addRule: oneArgBlock named: aName color: aColor mark: false
+]
+
+{ #category : #adding }
+SV >> addRule: oneArgBlock named: aName color: aColor mark: aBoolean [
+	rules add: (SVRule new block: oneArgBlock; name: aName; color: aColor; shouldMark: aBoolean)
 ]
 
 { #category : #'instance creation' }
@@ -40,7 +45,7 @@ SV >> numberOfRules [
 { #category : #'instance creation' }
 SV >> open [
 
-	| c maxWidth scale shape lbl box allCircles |
+	| c maxWidth scale shape lbl box allCircles line verticalLine |
 	c := RSCanvas new.
 	
 	maxWidth := 500.
@@ -57,6 +62,13 @@ SV >> open [
 		c add: lbl.
 		lbl translateMiddleRightTo: -20 @ (index * 20).
 		
+		line := RSLine new.
+		line from: 0 @ (index * 20).
+		line to: maxWidth @ (index * 20).
+		line color: Color gray lighter lighter lighter lighter.
+		line dashed.
+		c add: line.
+		
 		r entries do: [ :entry |
 			shape := RSEllipse new.
 			shape size: 10.
@@ -65,7 +77,14 @@ SV >> open [
 			c add: shape.
 			shape @ RSPopup.
 			shape when: RSMouseClick do: [ :evt | evt shape model inspect ].
-			shape translateTo: (scale scale: entry second) @ (index * 20)
+			shape translateTo: (scale scale: entry second) @ (index * 20).
+			
+			r shouldMark ifTrue: [ 
+				verticalLine := RSLine new color: Color red lighter.
+				verticalLine from: (shape position x @ 10). 
+				verticalLine to: (shape position x @ (self numberOfRules + 0.5* 20)).
+				c add: verticalLine
+			]
 		]
 	].
 	
@@ -75,8 +94,12 @@ SV >> open [
 		from: 5; to: 15;
 		normalize: [ :entry | entry relevantContent lines size ].
 	
-	
 	c @ RSCanvasController.
+	
+"RSPDFExporter new
+		canvas: c;
+		exportToFile: '/tmp/foo.pdf' asFileReference."
+
 	^ c open
 ]
 

@@ -5,20 +5,52 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+SVExample >> configureModel: model [
+
+	model
+		addRule: [ :l | l endsWith: 'Opened new window: Playground' ]
+		named: 'New playground'
+		color: Color green.
+	model
+		addRule: [ :l | l endsWith: 'Opened new window: Inspector' ]
+		named: 'New inspector'
+		color: Color green.
+	model
+		addRule: [ :l | '*Finished interaction*' match: l ]
+		named: 'Interaction'
+		color: Color green.
+
+	model
+		addRule: [ :l | '*Executed code:*' match: l ]
+		named: 'Executing'
+		color: Color blue
+		mark: true.
+	model
+		addRule: [ :l | '*Inspected variable:*' match: l ]
+		named: 'Executing & Inspecting'
+		color: Color blue
+		mark: true.
+
+	model
+		addRule: [ :l | '*Defined class with code:*' match: l ]
+		named: 'Class definition'
+		color: Color purple darker.
+	model
+		addRule: [ :l | '*Defined method with code:*' match: l ]
+		named: 'Method definition'
+		color: Color purple darker
+]
+
+{ #category : #'as yet unclassified' }
 SVExample >> exampleLargeJhonny [
+
 	<script: 'self new exampleLargeJhonny'>
 	| model |
 	model := SV new.
-	model addRule: [ :l | l endsWith: 'Opened new window: Playground' ] named: 'New playground' color: Color green.
-	model addRule: [ :l | l endsWith: 'Opened new window: Inspector' ] named: 'New inspector' color: Color green.
-	model addRule: [ :l | '*Finished interaction*' match: l ] named: 'Interaction' color: Color green.
-	model addRule: [ :l | '*Executed code:*' match: l ] named: 'Executing' color: Color blue.
-	model addRule: [ :l | '*Inspected variable:*' match: l ] named: 'Inspecting' color: Color blue.
-	model addRule: [ :l | '*Defined class with code:*' match: l ] named: 'Class definition' color: Color red.
-	model addRule: [ :l | '*Defined method with code:*' match: l ] named: 'Method definition' color: Color red.
-	
-	model processStream: '/Users/alexandrebergel/Dropbox/GitRepos/SessionVisualization/data/Jhonny.txt' asFileReference readStream. 
-	
+	self configureModel: model.
+	model processStream:
+		'/Users/alexandrebergel/Dropbox/GitRepos/SessionVisualization/data/Jhonny.txt'
+			asFileReference readStream.
 	^ model open
 ]
 
@@ -27,14 +59,7 @@ SVExample >> exampleLargeMilton [
 	<script: 'self new exampleLargeMilton'>
 	| model |
 	model := SV new.
-	model addRule: [ :l | l endsWith: 'Opened new window: Playground' ] named: 'New playground' color: Color green.
-	model addRule: [ :l | l endsWith: 'Opened new window: Inspector' ] named: 'New inspector' color: Color green.
-	model addRule: [ :l | '*Finished interaction*' match: l ] named: 'Interaction' color: Color green.
-	model addRule: [ :l | '*Executed code:*' match: l ] named: 'Executing' color: Color blue.
-	model addRule: [ :l | '*Inspected variable:*' match: l ] named: 'Inspecting' color: Color blue.
-	model addRule: [ :l | '*Defined class with code:*' match: l ] named: 'Class definition' color: Color red.
-	model addRule: [ :l | '*Defined method with code:*' match: l ] named: 'Method definition' color: Color red.
-	
+	self configureModel: model.	
 	model processStream: '/Users/alexandrebergel/Dropbox/GitRepos/SessionVisualization/data/Milton.txt' asFileReference readStream. 
 	
 	^ model open
