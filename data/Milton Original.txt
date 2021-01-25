@@ -1,3 +1,13 @@
+[ 19-12-2020 13:28:00 ] Started interaction with a WindowDragging
+[ 19-12-2020 13:28:15 ] Finished interaction with a WindowDragging. Time Spent: 14923 ms
+[ 19-12-2020 13:29:09 ] Opened new window: Playground
+[ 19-12-2020 13:29:09 ] Opened new window: Inspector
+[ 19-12-2020 13:31:33 ] Started interaction with a WindowDragging
+[ 19-12-2020 13:31:33 ] Finished interaction with a WindowDragging. Time Spent: 322 ms
+[ 19-12-2020 13:32:52 ] Opened new window: Playground
+[ 19-12-2020 13:32:53 ] Started interaction with a Playground
+[ 19-12-2020 13:38:02 ] Finished interaction with a Playground. Time Spent: 308910 ms
+[ 19-12-2020 13:38:03 ] Session ended.
 [ 19-12-2020 17:12:21 ] Opened new window: Playground
 [ 19-12-2020 17:12:21 ] Opened new window: Playground
 [ 19-12-2020 17:12:21 ] Opened new window: Inspector
