@@ -5,9 +5,9 @@ Class {
 		'rule',
 		'content',
 		'timestamp',
-		'second'
+		'relativeStartime'
 	],
-	#category : #SessionVisualization
+	#category : #'SessionVisualization-Core'
 }
 
 { #category : #accessing }
@@ -28,6 +28,16 @@ SVEntry >> printOn: str [
 	str nextPut: $<.
 	str nextPutAll: timestamp asString.
 	str nextPut: $>.
+]
+
+{ #category : #'as yet unclassified' }
+SVEntry >> relativeStarttime [
+	^ relativeStartime
+]
+
+{ #category : #'as yet unclassified' }
+SVEntry >> relativeStarttime: secondsAsInteger [
+	relativeStartime := secondsAsInteger
 ]
 
 { #category : #accessing }
@@ -53,13 +63,13 @@ SVEntry >> rule: anObject [
 { #category : #accessing }
 SVEntry >> second [
 
-	^ second
+	^ relativeStartime
 ]
 
 { #category : #accessing }
 SVEntry >> second: anInteger [
 
-	second := anInteger
+	relativeStartime := anInteger
 ]
 
 { #category : #accessing }
@@ -72,4 +82,10 @@ SVEntry >> timestamp [
 SVEntry >> timestamp: anObject [
 
 	timestamp := anObject
+]
+
+{ #category : #'as yet unclassified' }
+SVEntry >> timestampFromString: aString [
+	"aString could be 11:45:12"
+	timestamp := Time fromString: aString
 ]

@@ -8,7 +8,7 @@ Class {
 		'entries',
 		'shouldMark'
 	],
-	#category : #SessionVisualization
+	#category : #'SessionVisualization-Core'
 }
 
 { #category : #adding }

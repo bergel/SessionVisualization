@@ -6,8 +6,24 @@ Class {
 		'rules',
 		'startTime'
 	],
-	#category : #SessionVisualization
+	#category : #'SessionVisualization-Core'
 }
+
+{ #category : #public }
+SV >> addEntry: anEntry [
+	rules do: [ :r |
+		(r match: anEntry content)
+			ifTrue: [ 
+				entries ifEmpty: [ startTime := anEntry timestamp ].
+				
+				anEntry second: anEntry timestamp asSeconds - startTime asSeconds.
+				entries add: anEntry.
+				r addEntry: anEntry.
+				^ self ] ]
+	
+
+	
+]
 
 { #category : #adding }
 SV >> addRule: oneArgBlock named: aName color: aColor [ 
@@ -32,12 +48,12 @@ SV >> initialize [
 	startTime := Time fromString: '00:00:00'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #metrics }
 SV >> numberOfEntries [
 	^ entries size
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #metrics }
 SV >> numberOfRules [
 	^ rules size
 ]
@@ -47,6 +63,9 @@ SV >> open [
 
 	| c maxWidth scale shape lbl box allCircles line verticalLine |
 	c := RSCanvas new.
+	
+	"Simply open the canvas if there is no entry"
+	entries ifEmpty: [ ^ c open ].
 	
 	maxWidth := 500.
 	scale := NSScale linear.
@@ -103,7 +122,7 @@ SV >> open [
 	^ c open
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'public - VRIDE' }
 SV >> processSingleEventAsString: aLine [
 
 	| entry t |
@@ -123,7 +142,7 @@ SV >> processSingleEventAsString: aLine [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'public - VRIDE' }
 SV >> processStream: aStream [
 	| isInMultiLine currentEvent l lineNumber |
 	lineNumber := 0.
@@ -141,7 +160,7 @@ SV >> processStream: aStream [
 	currentEvent isEmpty ifFalse: [ self processSingleEventAsString: currentEvent contents ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'public - VRIDE' }
 SV >> processText: aText [
 	| isInMultiLine currentEvent |
 	isInMultiLine := false.
@@ -155,4 +174,9 @@ SV >> processText: aText [
 			ifFalse: [ isInMultiLine := true. currentEvent := currentEvent, String cr, l ].
 		 ].
 	currentEvent ifNotNil: [ self processSingleEventAsString: currentEvent ].
+]
+
+{ #category : #'public - TorchAnalysis' }
+SV >> processTorchStream: stream [
+	
 ]
