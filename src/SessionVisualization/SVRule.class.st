@@ -57,6 +57,8 @@ SVRule >> initialize [
 	super initialize.
 	entries := OrderedCollection new.
 	shouldMark := false.
+	color := Color blue.
+	block := [ :content | true ]
 ]
 
 { #category : #accessing }

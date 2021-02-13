@@ -6,39 +6,18 @@ Class {
 
 { #category : #'as yet unclassified' }
 SVTorchExample >> configureModel: model [
+	model
+		addRule: (SVRule new name: 'QGS'; color: Color red darker darker).
+		
+	model
+		addRule: (SVRule new name: 'US'; color: Color blue darker darker).
 
 	model
-		addRule: [ :l | l endsWith: 'Opened new window: Playground' ]
-		named: 'New playground'
-		color: Color green.
-	model
-		addRule: [ :l | l endsWith: 'Opened new window: Inspector' ]
-		named: 'New inspector'
-		color: Color green.
-	model
-		addRule: [ :l | '*Finished interaction*' match: l ]
-		named: 'Interaction'
-		color: Color green.
+		addRule: (SVRule new name: 'FFP'; color: Color green darker darker).
 
 	model
-		addRule: [ :l | '*Executed code:*' match: l ]
-		named: 'Executing'
-		color: Color blue
-		mark: true.
-	model
-		addRule: [ :l | '*Inspected variable:*' match: l ]
-		named: 'Executing & Inspecting'
-		color: Color blue
-		mark: true.
-
-	model
-		addRule: [ :l | '*Defined class with code:*' match: l ]
-		named: 'Class definition'
-		color: Color purple darker.
-	model
-		addRule: [ :l | '*Defined method with code:*' match: l ]
-		named: 'Method definition'
-		color: Color purple darker
+		addRule: (SVRule new name: 'EFP'; color: Color yellow darker darker).
+	
 ]
 
 { #category : #example }
@@ -58,14 +37,20 @@ SVTorchExample >> exampleJuanPabloTorch [
 	| model |
 	model := SV new.
 	self configureModel: model.
-	self processTorchSession: self sessionJuanPabloTorch.
+	self processTorchSession: self sessionJuanPabloTorch in: model.
 	^ model open
 ]
 
 { #category : #'as yet unclassified' }
-SVTorchExample >> processTorchSession: aSessionAsDictionaries [
-
-	self halt.
+SVTorchExample >> processTorchSession: aSessionAsDictionaries in: model [
+	"Assume that the model is adequately configured with the rules"
+	| entry rule |
+	aSessionAsDictionaries do: [ :d |
+		rule := model getRuleNamed: (d at: 'tagId').
+		entry := SVEntry new content: (d at: 'description'); relativeStarttime: (d at: 'timestamp').
+		rule addEntry: entry.
+		model addEntry: entry
+	]
 ]
 
 { #category : #example }

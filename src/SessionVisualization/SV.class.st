@@ -16,7 +16,8 @@ SV >> addEntry: anEntry [
 			ifTrue: [ 
 				entries ifEmpty: [ startTime := anEntry timestamp ].
 				
-				anEntry second: anEntry timestamp asSeconds - startTime asSeconds.
+				anEntry relativeStarttime ifNil: [
+					anEntry relativeStarttime: anEntry timestamp asSeconds - startTime asSeconds ].
 				entries add: anEntry.
 				r addEntry: anEntry.
 				^ self ] ]
@@ -26,18 +27,29 @@ SV >> addEntry: anEntry [
 ]
 
 { #category : #adding }
-SV >> addRule: oneArgBlock named: aName color: aColor [ 
-	self addRule: oneArgBlock named: aName color: aColor mark: false
+SV >> addRule: aRule [
+	self assert: [ aRule class == SVRule ].
+	rules add: aRule
 ]
 
 { #category : #adding }
-SV >> addRule: oneArgBlock named: aName color: aColor mark: aBoolean [
+SV >> createRule: oneArgBlock named: aName color: aColor [ 
+	self createRule: oneArgBlock named: aName color: aColor mark: false
+]
+
+{ #category : #adding }
+SV >> createRule: oneArgBlock named: aName color: aColor mark: aBoolean [
 	rules add: (SVRule new block: oneArgBlock; name: aName; color: aColor; shouldMark: aBoolean)
 ]
 
 { #category : #'instance creation' }
 SV >> entries [
 	^ entries
+]
+
+{ #category : #adding }
+SV >> getRuleNamed: aRuleName [
+	^ rules detect: [ :r | r name = aRuleName ]
 ]
 
 { #category : #initialization }

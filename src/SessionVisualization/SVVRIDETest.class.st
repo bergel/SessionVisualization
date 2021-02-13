@@ -52,9 +52,9 @@ SVVRIDETest >> testAllExamples [
 SVVRIDETest >> testExample [
 
 	model := SV new.
-	model addRule: [ :l | l endsWith: 'Opened new window: Playground' ] named: 'Playground' color: Color green.
-	model addRule: [ :l | l endsWith: 'Opened new window: Inspector' ] named: 'Inspector' color: Color lightGreen.
-	model addRule: [ :l | '*Finished interaction with a WindowDragging*' match: l ] named: 'Drag' color: Color red.
+	model createRule: [ :l | l endsWith: 'Opened new window: Playground' ] named: 'Playground' color: Color green.
+	model createRule: [ :l | l endsWith: 'Opened new window: Inspector' ] named: 'Inspector' color: Color lightGreen.
+	model createRule: [ :l | '*Finished interaction with a WindowDragging*' match: l ] named: 'Drag' color: Color red.
 	model processText: self example.
 	
 	self assert: model numberOfEntries equals: 10.
@@ -68,8 +68,8 @@ SVVRIDETest >> testExampleMultiline [
 
 
 	model := SV new.
-	model addRule: [ :l | '*interaction*' match: l ] named: 'Inspector' color: Color lightGreen.
-	model addRule: [ :l | '*Executed code:*' match: l ] named: 'Executed' color: Color red.
+	model createRule: [ :l | '*interaction*' match: l ] named: 'Inspector' color: Color lightGreen.
+	model createRule: [ :l | '*Executed code:*' match: l ] named: 'Executed' color: Color red.
 	
 	model processText: self exampleWithMultiLine.
 	
@@ -89,8 +89,8 @@ SVVRIDETest >> testExampleMultiline2 [
 
 
 	model := SV new.
-	model addRule: [ :l | '*interaction*' match: l ] named: 'Inspector' color: Color lightGreen.
-	model addRule: [ :l | '*Executed code:*' match: l ] named: 'Executed' color: Color red.
+	model createRule: [ :l | '*interaction*' match: l ] named: 'Inspector' color: Color lightGreen.
+	model createRule: [ :l | '*Executed code:*' match: l ] named: 'Executed' color: Color red.
 	model processStream: self exampleWithMultiLine readStream.
 	
 	self assert: model numberOfEntries equals: 3.
@@ -108,9 +108,9 @@ OCUndeclaredVariableWarning: Undeclared temp: a
 SVVRIDETest >> testExampleVerticalBar [
 
 	model := SV new.
-	model addRule: [ :l | l endsWith: 'Opened new window: Playground' ] named: 'Playground' color: Color green.
-	model addRule: [ :l | l endsWith: 'Opened new window: Inspector' ] named: 'Inspector' color: Color lightGreen.
-	model addRule: [ :l | '*Finished interaction with a WindowDragging*' match: l ] named: 'Drag' color: Color red mark: true.
+	model createRule: [ :l | l endsWith: 'Opened new window: Playground' ] named: 'Playground' color: Color green.
+	model createRule: [ :l | l endsWith: 'Opened new window: Inspector' ] named: 'Inspector' color: Color lightGreen.
+	model createRule: [ :l | '*Finished interaction with a WindowDragging*' match: l ] named: 'Drag' color: Color red mark: true.
 	model processText: self example.
 	
 	self assert: model numberOfEntries equals: 10.
@@ -125,9 +125,9 @@ SVVRIDETest >> testExampleVerticalBar [
 SVVRIDETest >> testExampleWithStream [
 
 	model := SV new.
-	model addRule: [ :l | l endsWith: 'Opened new window: Playground' ] named: 'Playground' color: Color green.
-	model addRule: [ :l | l endsWith: 'Opened new window: Inspector' ] named: 'Inspector' color: Color lightGreen.
-	model addRule: [ :l | '*Finished interaction with a WindowDragging*' match: l ] named: 'Drag' color: Color red.
+	model createRule: [ :l | l endsWith: 'Opened new window: Playground' ] named: 'Playground' color: Color green.
+	model createRule: [ :l | l endsWith: 'Opened new window: Inspector' ] named: 'Inspector' color: Color lightGreen.
+	model createRule: [ :l | '*Finished interaction with a WindowDragging*' match: l ] named: 'Drag' color: Color red.
 	model processStream: self example readStream.
 	
 	self assert: model numberOfEntries equals: 10.
